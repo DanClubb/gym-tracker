@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useAuth } from "@/lib/providers";
 import {
     useWorkoutTemplates,
@@ -45,7 +45,7 @@ interface ExerciseSession {
     completed: boolean;
 }
 
-export default function NewWorkoutPage() {
+function NewWorkoutPageContent() {
     const { user } = useAuth();
     const router = useRouter();
     const searchParams = useSearchParams();
@@ -540,5 +540,19 @@ export default function NewWorkoutPage() {
                 </div>
             </div>
         </DashboardLayout>
+    );
+}
+
+export default function NewWorkoutPage() {
+    return (
+        <Suspense
+            fallback={
+                <div className="flex min-h-screen items-center justify-center">
+                    <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-blue-600"></div>
+                </div>
+            }
+        >
+            <NewWorkoutPageContent />
+        </Suspense>
     );
 }
